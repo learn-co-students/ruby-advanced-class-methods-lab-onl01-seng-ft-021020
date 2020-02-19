@@ -31,15 +31,11 @@ class Song
   end
 
   def self.find_by_name(name)
-    @@all.find { |song| song.name == name }
+    self.all.find { |song| song.name == name }
   end
 
   def self.find_or_create_by_name(name)
-    if self.find_by_name(name) != nil
-      self.find_by_name(name)
-    else
-      self.create_by_name(name)
-    end
+    self.find_by_name(name) || self.create_by_name(name)
   end
 
   def self.alphabetical
@@ -49,7 +45,7 @@ class Song
   def self.new_from_filename(song_filename)
     data = song_filename.split(" - ")
 
-    song = self.new
+    song = self.create
     song.name = data[1].gsub(".mp3","")
     song.artist_name = data[0]
 
@@ -58,7 +54,6 @@ class Song
 
   def self.create_from_filename(song_filename)
     song = self.new_from_filename(song_filename)
-    song.save
     song
   end
 
